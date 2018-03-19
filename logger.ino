@@ -14,7 +14,7 @@
 
 const char* ssid     = "Soffitta";
 const char* password = "maBelin!";
-const char* url = "http://192.168.1.44/logger/test.php";
+const char* url = "http://192.168.1.44/logger/Insert.php";
 
 //DHT dht;
 DHT dht(2, DHTTYPE);
