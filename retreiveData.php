@@ -20,7 +20,7 @@ $params = json_decode($post, true);
 		- sensors: [int array] ids of sensor required
 */
 // Name of the file needed
-$fileName = "{$params['start']}-{$params['end']}-{$params['type']}-" . oneHotEncode($params['sensors']) . ".csv";
+$fileName = "buffer/{$params['start']}-{$params['end']}-{$params['type']}-" . oneHotEncode($params['sensors']) . ".csv";
 if (file_exists($fileName)) { // This is already checked in frontend but you never know
 	die('OK');
 }
@@ -36,8 +36,6 @@ $query .= ";\n";
 if (!($result = $sql->query($query))) {
 	echo "Could not retreive names: " . $sql->error;
 }
-//var_dump($result->fetch_all());
-echo $query;
 $data = $result->fetch_all();
 $a = array('Time'); // x-values label
 foreach($data as &$d) {
