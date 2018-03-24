@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="dygraph.css">
+  <title>Temperatures with Range Selector</title>
+  <script type="text/javascript" src="dygraph.min.js"></script>
+
+</head>
+
+<body>
+  <p>
+    Roll period of 14 timesteps, various custom range selector options.
+  </p>
+  <div id="graph1" style="width:800px; height:320px;"></div>
+
+  <script type="text/javascript">
+
+    g = new Dygraph(
+      document.getElementById("graph1"),
+      "buffer/1521952667-1521955427-0-52.csv",
+      {
+        rollPeriod: 14,
+        showRoller: true,
+        title: 'Temperatura Stanze',
+        ylabel: 'Temperatura',
+        legend: 'always',
+        axis: {
+          x: {
+            //valueFormatter: Dygraph.dateString_,
+            valueParser: function (x) { return 1000 * parseInt(x); },
+            ticker: Dygraph.dateTicker
+          }
+        }
+      }
+    );
+  </script>
+</body>
+
+</html>

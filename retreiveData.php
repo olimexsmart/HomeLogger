@@ -73,11 +73,13 @@ for ($y = $startYear; $y <= $endYear; $y++) {
 	}
 	// Fetch data and write file
 	$data = $result->fetch_all();
-	foreach ($data as &$d) {		
-		fputcsv($file, $d);
+	foreach ($data as &$d) {	
+		$d[0] = date('Y/m/d H:i', $d[0]);
+		fputcsv($file, $d, ',', ' ');
 	}
 }
 
+echo 'Done';
 fclose($file);
 $sql->close();
 
