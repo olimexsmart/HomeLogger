@@ -5,14 +5,69 @@
   <link rel="stylesheet" href="dygraph.css">
   <title>Temperatures with Range Selector</title>
   <script type="text/javascript" src="dygraph.min.js"></script>
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
 </head>
 
 <body>
-  <p>
-    Roll period of 14 timesteps, various custom range selector options.
-  </p>
-  <div id="graph1" style="width:800px; height:320px;"></div>
+
+  <br>
+
+  <ul class="nav justify-content-center">
+    <li class="nav-item">
+      <a class="nav-link active" href="#">Today</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Week</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Month</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Year</a>
+    </li>
+  </ul>
+  <br>
+  <form>
+    <div class="container">
+      <div class="form-group row">
+        <div class="col-3">
+        </div>
+        <label for="colFormLabelSm" class="col-2 col-form-label col-form-label-sm">
+          <b>Start</b>
+        </label>
+        <div class="col-4">
+          <input type="date" class="form-control form-control-sm" id="codflFormLabelSm">
+        </div>
+        <div class="col-3">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-3">
+        </div>
+        <label for="colFormLabelSm" class="col-2 col-form-label col-form-label-sm">
+          <b>End</b>
+        </label>
+        <div class="col-4">
+          <input type="date" class="form-control form-control-sm" id="colFormLabelSm">
+        </div>
+        <div class="col-3">
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-12 text-center">
+          <button type="button" class="btn btn-primary ">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </form>
+  <br>
+  <div id="graph1" style="width:800px; height:320px; margin-left: auto; margin-right: auto;"></div>
 
   <script type="text/javascript">
 
