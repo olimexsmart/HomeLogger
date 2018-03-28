@@ -17,7 +17,7 @@ if ($sql->connect_error) {
 }
 
 // Getting current month in the format YYYY-s$ID
-$tableName = date('Y') . "s$ID";
+$tableName = date('Y') . "-s$ID";
 
 // Check if said table exists
 $query = "SELECT * FROM information_schema.tables WHERE table_schema = '$dataBase' AND table_name = '$tableName' LIMIT 1;";
@@ -39,7 +39,8 @@ if(!$result->num_rows == 1) {
 }
 
 // Insert the data
-$query = "insert into logger.`$tableName` values(NULL, NULL, $ID, $temperature, $humidity);";
+$stamp = time();
+$query = "insert into logger.`$tableName` values($stamp, $temperature, $humidity);";
 if (!$sql->query($query)) {
     echo "Could not insert into database: " . $sql->error;
 }
