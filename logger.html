@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>OlimexSmart</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+        <link rel="stylesheet" href="../assets/css/main.css" />
+        <link rel="stylesheet" href="dygraph.css">
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<link rel="icon" type="image/png" href="../images/favicon.png" />
+	</head>
+	<body>
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+                <header id="header">
+                    <div class="inner">
+
+                        <!-- Logo -->
+                        <a href="index.html" class="logo">
+                                <span class="symbol"><img src="../images/favicon.png" alt="" /></span><span class="title">OlimexSmart</span>
+                        </a>
+
+                        <!-- Nav -->
+                        <nav>
+                            <ul>
+                                <li><a href="#menu">Menu</a></li>
+                            </ul>
+                        </nav>
+
+                    </div>
+                </header>
+
+				<!-- Menu -->
+                <nav id="menu">
+                    <h2>Menu</h2>
+                    <ul>
+                        <li><a href="index.html">Projects</a></li>
+                        <li><a href="bio.html">Curriculum</a></li>
+                        <li><a href="contacts.html">Contacts</a></li>
+                        <li><a href="logger/logger.html">Home logging</a></li>
+                        <li><a href="fitbit.html">FitBit OAuth2</a></li>
+                    </ul>
+                </nav>
+
+				<!-- Main -->
+                <div id="main">
+                    <div class="inner">
+                        <h1>Logger</h1>
+                        <ul class="actions fit">
+                            <li><a href="#" class="button fit">Today</a></li>
+                            <li><a href="#" class="button fit">Week</a></li>
+                            <li><a href="#" class="button fit">Month</a></li>
+                        </ul>
+                        <form method="post" action="#">
+                            <div class="row uniform">
+                                <div class="4u 12u$(xsmall)">
+                                    <input type="text" name="demo-name" id="demo-name" value="" placeholder="Start Date" />
+                                </div>
+                                <div class="4u 12u$(xsmall)">
+                                    <input type="email" name="demo-email" id="demo-email" value="" placeholder="End Date" />
+                                </div>
+                                <div class="4u$ 12u$(xsmall)">
+                                    <a href="#" class="button fit">Confirm</a>
+                                </div>
+                            </div>
+                        </form>
+                        <div id="graph1" style="width:800px; height:320px; margin-left: auto; margin-right: auto;"></div>
+                    </div>
+                </div>
+                
+				<!-- Footer -->
+				<footer id="footer">
+					<div class="inner">
+						<section>						
+							<h2>Follow</h2>
+							<ul class="icons">
+								<li><a href="https://twitter.com/OlimexSmart" class="icon style2 fa-twitter"><span class="label">Twitter</span></a></li>
+								<li><a href="https://www.facebook.com/Luca.Olivieri94" class="icon style2 fa-facebook"><span class="label">Facebook</span></a></li>
+								<li><a href="https://www.instagram.com/olimexsmart/" class="icon style2 fa-instagram"><span class="label">Instagram</span></a></li>
+								<li><a href="https://github.com/olimexsmart" class="icon style2 fa-github"><span class="label">GitHub</span></a></li>
+								<li><a href="mailto:ollivernew@hotmail.it?Subject=Olimexsmart%20visitor" class="icon style2 fa-envelope-o"><span class="label">Email</span></a></li>
+							</ul>
+						</section>
+						<ul class="copyright">
+							<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+						</ul>
+					</div>
+				</footer>
+
+			</div>
+
+		<!-- Scripts -->
+        <script src="../assets/js/jquery.min.js"></script>
+        <script src="../assets/js/skel.min.js"></script>
+        <script src="../assets/js/util.js"></script>
+        <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+        <script src="../assets/js/main.js"></script>
+        <script type="text/javascript" src="dygraph.min.js"></script>
+        <script type="text/javascript">
+
+            g = new Dygraph(
+              document.getElementById("graph1"),
+              "buffer/1521952667-1521955427-0-52.csv",
+              {
+                rollPeriod: 14,
+                //showRoller: true,
+                title: 'Temperatura Stanze',
+                ylabel: 'Temperatura',
+                legend: 'always',
+                axis: {
+                  x: {
+                    //valueFormatter: Dygraph.dateString_,
+                    valueParser: function (x) { return 1000 * parseInt(x); },
+                    ticker: Dygraph.dateTicker
+                  }
+                }
+              }
+            );
+          </script>
+
+	</body>
+</html>
