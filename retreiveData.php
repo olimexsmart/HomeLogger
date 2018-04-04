@@ -21,7 +21,11 @@ The parameters are:
 // Name of the file needed
 $fileName = "buffer/{$params['start']}-{$params['end']}-{$params['type']}-" . oneHotEncode($params['sensors']) . ".csv";
 if (file_exists($fileName)) { // This is already checked in frontend but you never know
-    die('OK');
+    die('File already existing');
+}
+if (count($params['sensors']) == 0) {
+	fopen($fileName, 'w'); // Still creating the file allows to show an empty graph
+	die('Sensor array empty');
 }
 // Open file for writing and write headers
 $first = $params['sensors'][0];
@@ -84,7 +88,7 @@ for ($y = $startYear; $y <= $endYear; $y++) {
     }
 }
 
-echo 'Done';
+echo $params['type'];
 fclose($file);
 $sql->close();
 
