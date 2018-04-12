@@ -19,6 +19,10 @@ $('#confirm').click(function () {
     // MANAGE EXCEPTIONS IN PARSING HERE
     start = Math.round(Date.parse($('#start').val()) / 1000);
     end = Math.round(Date.parse($('#end').val()) / 1000);
+    if (isNaN(start) || isNaN(end)) {
+        alert("Dates badly formatted.");
+        return;
+    }
     if (start < end)
         newRequest(start, end);
     else
