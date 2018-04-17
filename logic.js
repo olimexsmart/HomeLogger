@@ -29,6 +29,14 @@ $('#confirm').click(function () {
         alert('Start date should be before end date\nCannot warp the space continuum here');
 });
 
+$('#roll').click(function () {
+    if (graphs == undefined)  
+        return;
+    for (let index = 0; index < graphs.length; index++) {              
+        graphs[index].adjustRoll($('#rollperiod').val());
+    }
+});
+
 
 function newRequest(start, end) {
     graphs = [];
@@ -59,7 +67,7 @@ function newRequest(start, end) {
                     method: "POST",
                     dataType: "text",
                     data: JSON.stringify({ start: start, end: end, type: type, sensors: sensors }),
-                    timeout: 3000,
+                    timeout: 30000,
                     success: function (result) {
                         /*
                             Using the result as index is necessary because otherwise
