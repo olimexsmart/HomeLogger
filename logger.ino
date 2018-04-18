@@ -11,7 +11,7 @@
 #include <DHT.h>
 #include "credentials.h"
 
-#define ID 1
+#define ID 2
 #define DHTTYPE DHT11
 #define INTERVAL 60000
 //#define DEBUG

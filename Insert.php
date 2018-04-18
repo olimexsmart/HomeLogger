@@ -39,8 +39,14 @@ if(!$result->num_rows == 1) {
 }
 
 // Insert the data
-$stamp = time();
-$query = "insert into logger.`$tableName` values($stamp, $temperature, $humidity);";
+//Getting a time stamp of current minute
+$now = new DateTime();
+$format = $now->format('Y-m-d H:i') . ":00";
+$then = new DateTime($format);
+$epoch = $then->getTimestamp();
+//$stamp = time();
+
+$query = "insert into logger.`$tableName` values($epoch, $temperature, $humidity);";
 if (!$sql->query($query)) {
     echo "Could not insert into database: " . $sql->error;
 }
