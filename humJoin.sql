@@ -1,4 +1,4 @@
-SELECT s1.stamp, s1.temperature as t1, s2.temperature as t2, s3.temperature as t3, s4.temperature as t4, s5.temperature as t5, s6.temperature as t6, s7.temperature as t7
+SELECT s1.stamp, s1.humidity as h1, s2.humidity as h2, s3.humidity as h3, s4.humidity as h4, s5.humidity as h5, s6.humidity as h6, s7.humidity as h7
 FROM `2018-s1` as s1
 join `2018-s2` as s2 on s1.stamp = s2.stamp
 join `2018-s3` as s3 on s1.stamp = s3.stamp

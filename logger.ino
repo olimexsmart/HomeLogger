@@ -11,12 +11,12 @@
 #include <DHT.h>
 #include "credentials.h"
 
-#define ID 2
+#define ID 7
 #define DHTTYPE DHT11
 #define INTERVAL 60000
 //#define DEBUG
 
-const char* url = "http://192.168.1.44/logger/Insert.php";
+const char* url = "http://192.168.2.44/logger/Insert.php";
 
 //DHT dht;
 DHT dht(2, DHTTYPE);
