@@ -32,9 +32,9 @@ $('#confirm').click(function () {
 });
 
 $('#roll').click(function () {
-    if (graphs == undefined)  
+    if (graphs == undefined)
         return;
-    for (let index = 0; index < graphs.length; index++) {              
+    for (let index = 0; index < graphs.length; index++) {
         graphs[index].adjustRoll($('#rollperiod').val());
     }
 });
@@ -74,13 +74,13 @@ function newRequest(start, end) {
                         /*
                             Using the result as index is necessary because otherwise
                             the async callbacks would be called once the for loop had already 
-                            finished. And thus the variables used would be alwayse the 
+                            finished. And thus the variables used would be followe the 
                             same of the last cycle.
                         */
                         result = parseInt(result); // Converting string to int
                         graphs.push(newGraph("graph" + type, filename[result], 30, result));
                         if (graphs.length > 1)
-                            Dygraph.synchronize(graphs);
+                            Dygraph.synchronize(graphs, { range: false });
                     },
                     error: function (result) {
                         alert('Error retreiving data from server');
@@ -88,7 +88,7 @@ function newRequest(start, end) {
                 });
             }
         });
-    }    
+    }
 }
 
 function newGraph(divID, filename, roll, type) {
@@ -102,7 +102,7 @@ function newGraph(divID, filename, roll, type) {
                     //showRoller: true,
                     title: 'Temperature',
                     ylabel: 'Temperature',
-                    legend: 'always',
+                    legend: 'follow',
                     axis: {
                         x: {
                             //valueFormatter: Dygraph.dateString_,
@@ -122,7 +122,7 @@ function newGraph(divID, filename, roll, type) {
                     //showRoller: true,
                     title: 'Humidity',
                     ylabel: 'Humidity',
-                    legend: 'always',
+                    legend: 'follow',
                     axis: {
                         x: {
                             //valueFormatter: Dygraph.dateString_,
@@ -133,7 +133,7 @@ function newGraph(divID, filename, roll, type) {
                 }
             );
             break;
-    }    
+    }
 }
 
 function oneHotEncode(intArray) {
