@@ -1,4 +1,6 @@
 var graphs;
+// Adapting to window size such that both graphs can be displayed
+$("div[id^='graph']").css({ height: $(window).height() * 0.5, width: $(window).width() * 0.9 });
 
 $('#today').click(function () {
     var now = Math.round(new Date() / 1000);
@@ -77,6 +79,8 @@ function newRequest(start, end) {
                         */
                         result = parseInt(result); // Converting string to int
                         graphs.push(newGraph("graph" + type, filename[result], 30, result));
+                        if (graphs.length > 1)
+                            Dygraph.synchronize(graphs);
                     },
                     error: function (result) {
                         alert('Error retreiving data from server');
@@ -84,7 +88,7 @@ function newRequest(start, end) {
                 });
             }
         });
-    }
+    }    
 }
 
 function newGraph(divID, filename, roll, type) {
@@ -129,8 +133,7 @@ function newGraph(divID, filename, roll, type) {
                 }
             );
             break;
-
-    }
+    }    
 }
 
 function oneHotEncode(intArray) {
