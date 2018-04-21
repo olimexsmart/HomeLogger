@@ -1,6 +1,6 @@
 var graphs;
 // Adapting to window size such that both graphs can be displayed
-$("div[id^='graph']").css({ height: $(window).height() * 0.5, width: $(window).width() * 0.9 });
+$("div[id^='graph']").css({ height: $(window).height() * 0.5, width: Math.min($(window).width() * 0.9, 1175) });
 
 $('#today').click(function () {
     var now = Math.round(new Date() / 1000);
