@@ -52,45 +52,39 @@ function newRequest(start, end) {
 
     // Both temperature and humidity
     for (let type = 0; type < 2; type++) {
-        // First check if file is alread present
-        filename.push('buffer/' + start + '-' + end + '-' + type + '-' + oneHotEncode(sensors) + '.csv');
-        $.ajax({
-            url: filename[type],
-            type: 'HEAD',
-            success: function () {
-                //file exists
-                console.log('File exists');
-            },
-            error: function () {
-                //file not exists
-                console.log('File not found, requesting');
-                $.ajax({
-                    url: "retreiveData.php",
-                    method: "POST",
-                    dataType: "text",
-                    data: JSON.stringify({ start: start, end: end, type: type, sensors: sensors }),
-                    timeout: 30000,
-                    success: function (result) {
-                        /*
-                            Using the result as index is necessary because otherwise
-                            the async callbacks would be called once the for loop had already 
-                            finished. And thus the variables used would be followe the 
-                            same of the last cycle.
-                        */
-                        result = parseInt(result); // Converting string to int
-                        graphs.push(newGraph("graph" + type, filename[result], 30, result));
-                        if (graphs.length > 1)
-                            Dygraph.synchronize(graphs, { range: false });
-                    },
-                    error: function (result) {
-                        alert('Error retreiving data from server');
-                    }
-                });
-            }
-        });
-    }
+		  graphs.push(newGraph("graph" + type, filename[result], 30, result));
+		  if (graphs.length > 1)
+		      Dygraph.synchronize(graphs, { range: false });
+		}
 }
 
+// Request data and return array to Dygraph constructor
+function requestData () {
+	        $.ajax({
+            url: "retreiveData.php",
+            method: "POST",
+            dataType: "text",
+            data: JSON.stringify({ start: start, end: end, type: type, sensors: sensors }),
+            timeout: 30000,
+            success: function (result) {
+                /*
+                    Using the result as index is necessary because otherwise
+                    the async callbacks would be called once the for loop had already 
+                    finished. And thus the variables used would be followe the 
+                    same of the last cycle.
+                */
+                result = parseInt(result); // Converting string to int
+
+            },
+            error: function (result) {
+                alert('Error retreiving data from server');
+            }
+        });
+        return x; /// HERE
+}
+
+// Set specific options depending on the graph
+// At the same time retreive label names from the checkboxes
 function newGraph(divID, filename, roll, type) {
     switch (type) {
         case 0:

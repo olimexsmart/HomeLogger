@@ -20,12 +20,10 @@ The parameters are:
  */
 
 /*
-Retreive all the data requested into an array.
-Echo them as CSV.
-If value is at its minimum possible, leave it blank
-Take care of header carefully, columns may not be in order,
-associate them name by name.
- */
+	Retreive all the data requested into an array.
+	Traslate this array in JSON
+*/
+/*
 // Load sensors names
 $query = "SELECT * FROM sensorname;";
 if (!($result = $sql->query($query))) {
@@ -33,19 +31,34 @@ if (!($result = $sql->query($query))) {
 }
 $data = $result->fetch_all();
 // Write header here
-
+*/
 
 // Loop through years if is that necessary
 $startYear = getdate($params['start'])['year'];
 $endYear = getdate($params['end'])['year'];
 $type = '';
 if ($params['type'] == 0) {
-    $type = 'temperature';
+    $type = 'temp';
 } elseif ($params['type'] == 1) {
-    $type = 'humidity';
+    $type = 'hum';
 }
 for ($y = $startYear; $y <= $endYear; $y++) {
-    // Echo as CSV
+    // Query data
+    $query = "SELECT minute";
+    // Select each sensor in ascending order
+    sort($params['sensors']);
+    foreach ($params['sensors'] as &$id) {
+    	$query .= ",`$type-$id`";
+    }
+    $query .= " FROM logger.`$y-$type`;";
+    
+    
+    if (!($result = $sql->query($query))) {
+ 	  	echo "Could not retreive data: " . $sql->error;
+		}
+    $data = $result->fetch_all();
+    
+    // DO SOMETHING WITH IT
 }
 
 $sql->close();
