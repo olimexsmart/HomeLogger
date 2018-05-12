@@ -20,18 +20,18 @@ The parameters are:
  */
 
 /*
-	Retreive all the data requested into an array.
-	Traslate this array in JSON
-*/
+Retreive all the data requested into an array.
+Traslate this array in JSON
+ */
 /*
 // Load sensors names
 $query = "SELECT * FROM sensorname;";
 if (!($result = $sql->query($query))) {
-    echo "Could not retreive names: " . $sql->error;
+echo "Could not retreive names: " . $sql->error;
 }
 $data = $result->fetch_all();
 // Write header here
-*/
+ */
 
 // Loop through years if is that necessary
 $startYear = getdate($params['start'])['year'];
@@ -48,16 +48,17 @@ for ($y = $startYear; $y <= $endYear; $y++) {
     // Select each sensor in ascending order
     sort($params['sensors']);
     foreach ($params['sensors'] as &$id) {
-    	$query .= ",`$type-$id`";
+        $query .= ",`$type-$id`";
     }
-    $query .= " FROM logger.`$y-$type`;";
-    
-    
+    $query .= " FROM logger.`$y-$type`
+                WHERE minute > {$params['start']} AND minute < {$params['end']}
+                ORDER BY minute ASC;";
+
     if (!($result = $sql->query($query))) {
- 	  	echo "Could not retreive data: " . $sql->error;
-		}
+        echo "Could not retreive data: " . $sql->error;
+    }
     $data = $result->fetch_all();
-    
+
     // DO SOMETHING WITH IT
 }
 

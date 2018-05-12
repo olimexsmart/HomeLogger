@@ -26,37 +26,34 @@ The table created contains just the column for the timestamp. The
 columns for the different sensors will be created programmatically.
  */
 $sensors = array("temp", "hum");
-foreach ($sensors as &$s)
+foreach ($sensors as &$s) {
 // Check if said table exists
-{
     $query = "SELECT *
 				FROM information_schema.tables
 				WHERE table_schema = '$dataBase'
 				AND table_name = '$year-$s'
 				LIMIT 1;";
-}
 
-if (!($result = $sql->query($query))) {
-    die("Could not check table existence: " . $sql->error);
-}
+    if (!($result = $sql->query($query))) {
+        die("Could not check table existence: " . $sql->error);
+    }
 
 // If table does not exists, create it
-if (!$result->num_rows == 1) {
-    $query = "CREATE TABLE `logger`.`$year-$s` (
+    if (!$result->num_rows == 1) {
+        $query = "CREATE TABLE `logger`.`$year-$s` (
 					`minute` INT UNSIGNED NOT NULL,
 					PRIMARY KEY (`minute`));";
-    if (!$sql->query($query)) {
-        die("Could not create new table: " . $sql->error);
+        if (!$sql->query($query)) {
+            die("Could not create new table: " . $sql->error);
+        }
     }
 }
-
 /*
 Check if column for this particular sensor ID is present.
 If not, create it, this allows for dynamic addition of sensors
  */
-foreach ($sensor as &$s) {
+foreach ($sensors as &$s) {
     // Checking column existence
-
     $query = "SHOW COLUMNS FROM `$year-$s` LIKE '$s-$ID';";
     if (!($result = $sql->query($query))) {
         die("Could not check column existence: " . $sql->error);
@@ -77,7 +74,7 @@ foreach ($sensor as &$s) {
         $colName = $result->fetch_row()[0];
 
         $query = "ALTER TABLE `logger`.`$year-$s`
-								ADD COLUMN `$s-$ID` FLOAT NOT NULL DEFAULT 0 AFTER `$colName`;";
+				    ADD COLUMN `$s-$ID` FLOAT DEFAULT NULL AFTER `$colName`;";
         if (!$sql->query($query)) {
             die("Could not create new table: " . $sql->error);
         }
@@ -98,7 +95,7 @@ Other sensors will update that line.
 
 ON DUPLICATE KEY UPDATE <------ miracle
  */
-foreach ($sensor as &$s) {
+foreach ($sensors as &$s) {
     // Insert only if key is not present, otherwise update
     $query = "INSERT INTO logger.`$year-$s` (minute, `$s-$ID`) VALUES($epoch, $_POST[$s])
 				ON DUPLICATE KEY UPDATE `$s-$ID`=$_POST[$s];";
