@@ -39,104 +39,71 @@ $('#roll').click(function () {
     }
 });
 
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 function newRequest(start, end) {
     graphs = [];
+    // Get which sensors are checked
     sensors = [];
-    filename = [];
-
+    sensorNames = [];
     checked = $(':checked');
     for (let i = 0; i < checked.length; i++) {
-        sensors.push(checked[i].name);
+        sensors.push(checked[i].id);
+        sensorNames.push(checked[i].name);
     }
 
-    // Both temperature and humidity
-    for (let type = 0; type < 2; type++) {
-		  graphs.push(newGraph("graph" + type, filename[result], 30, result));
-		  if (graphs.length > 1)
-		      Dygraph.synchronize(graphs, { range: false });
-		}
-}
-
-// Request data and return array to Dygraph constructor
-function requestData () {
-	        $.ajax({
-            url: "retreiveData.php",
-            method: "POST",
-            dataType: "text",
-            data: JSON.stringify({ start: start, end: end, type: type, sensors: sensors }),
-            timeout: 30000,
-            success: function (result) {
-                /*
-                    Using the result as index is necessary because otherwise
-                    the async callbacks would be called once the for loop had already 
-                    finished. And thus the variables used would be followe the 
-                    same of the last cycle.
-                */
-                result = parseInt(result); // Converting string to int
-
-            },
-            error: function (result) {
-                alert('Error retreiving data from server');
+    $.ajax({
+        url: "/logger/retreiveData.php",
+        method: "POST",
+        dataType: "text",
+        data: JSON.stringify({ start: start, end: end, sensors: sensors }),
+        timeout: 30000,
+        success: function (result) {
+            // Create graphs both for temperature and humidity
+            result = JSON.parse(result);
+            for (let type = 0; type < 2; type++) {
+                graphs.push(newGraph("graph" + type, result[type], 30, type));
+                if (graphs.length > 1)
+                    Dygraph.synchronize(graphs, { range: false });
             }
-        });
-        return x; /// HERE
+        },
+        error: function (result) {
+            alert('Error retreiving data from server');
+        }
+    });
 }
 
 // Set specific options depending on the graph
 // At the same time retreive label names from the checkboxes
-function newGraph(divID, filename, roll, type) {
+function newGraph(divID, data, roll, type) {
+    label = "";
     switch (type) {
         case 0:
-            return g = new Dygraph(
-                document.getElementById(divID),
-                filename,
-                {
-                    rollPeriod: roll,
-                    //showRoller: true,
-                    title: 'Temperature',
-                    ylabel: 'Temperature',
-                    legend: 'follow',
-                    axis: {
-                        x: {
-                            //valueFormatter: Dygraph.dateString_,
-                            valueParser: function (x) { return 1000 * parseInt(x); },
-                            ticker: Dygraph.dateTicker
-                        }
-                    }
-                }
-            );
+            label = 'Temperature';
             break;
         case 1:
-            return g = new Dygraph(
-                document.getElementById(divID),
-                filename,
-                {
-                    rollPeriod: roll,
-                    //showRoller: true,
-                    title: 'Humidity',
-                    ylabel: 'Humidity',
-                    legend: 'follow',
-                    axis: {
-                        x: {
-                            //valueFormatter: Dygraph.dateString_,
-                            valueParser: function (x) { return 1000 * parseInt(x); },
-                            ticker: Dygraph.dateTicker
-                        }
-                    }
-                }
-            );
+            label = 'Humidity';
             break;
     }
+
+    return g = new Dygraph(
+        document.getElementById(divID),
+        data,
+        {
+            rollPeriod: roll,
+            //showRoller: true,
+            title: label,
+            ylabel: label,
+            legend: 'follow',
+            axis: {
+                x: {
+                    //valueFormatter: Dygraph.dateString_,
+                    valueParser: function (x) { return 1000 * parseInt(x); },
+                    ticker: Dygraph.dateTicker
+                }
+            }
+        }
+    );
 }
 
-function oneHotEncode(intArray) {
-    result = 0;
 
-    for (let i = 0; i < intArray.length; i++) {
-        mask = 1;
-        result = result | mask << intArray[i];
-    }
-
-    return result;
-}
