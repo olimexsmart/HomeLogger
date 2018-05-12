@@ -45,7 +45,7 @@ function newRequest(start, end) {
     graphs = [];
     // Get which sensors are checked
     sensors = [];
-    sensorNames = [];
+    sensorNames = ["Date"];
     checked = $(':checked');
     for (let i = 0; i < checked.length; i++) {
         sensors.push(checked[i].id);
@@ -62,7 +62,11 @@ function newRequest(start, end) {
             // Create graphs both for temperature and humidity
             result = JSON.parse(result);
             for (let type = 0; type < 2; type++) {
-                graphs.push(newGraph("graph" + type, result[type], 30, type));
+                // Dygraph needs a Date object instead of a pure epoch
+                for (let k = 0; k < result[type].length; k++) {
+                    result[type][k][0] = new Date(result[type][k][0] * 1000);                    
+                }
+                graphs.push(newGraph("graph" + type, result[type], sensorNames, 30, type));
                 if (graphs.length > 1)
                     Dygraph.synchronize(graphs, { range: false });
             }
@@ -75,14 +79,17 @@ function newRequest(start, end) {
 
 // Set specific options depending on the graph
 // At the same time retreive label names from the checkboxes
-function newGraph(divID, data, roll, type) {
+function newGraph(divID, data, labels, roll, type) {
     label = "";
+    title = "";
     switch (type) {
         case 0:
-            label = 'Temperature';
+            label = '°C';
+            title = 'Temperature';
             break;
         case 1:
-            label = 'Humidity';
+            label = '%';
+            title = 'Humidity';
             break;
     }
 
@@ -90,18 +97,12 @@ function newGraph(divID, data, roll, type) {
         document.getElementById(divID),
         data,
         {
+            labels: labels,
             rollPeriod: roll,
-            //showRoller: true,
-            title: label,
+            connectSeparatePoints: true,
+            title: title,
             ylabel: label,
-            legend: 'follow',
-            axis: {
-                x: {
-                    //valueFormatter: Dygraph.dateString_,
-                    valueParser: function (x) { return 1000 * parseInt(x); },
-                    ticker: Dygraph.dateTicker
-                }
-            }
+            legend: 'follow'
         }
     );
 }
