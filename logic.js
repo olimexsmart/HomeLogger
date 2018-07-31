@@ -107,4 +107,24 @@ function newGraph(divID, data, labels, roll, type) {
     );
 }
 
+// #########################
+// Auto load current temperatures
+$( document ).ready(function() {
+    $.ajax({
+        url: "/logger/currentValues.php",
+        method: "GET",
+        dataType: "text",        
+        timeout: 30000,
+        success: function (result) {            
+            result = JSON.parse(result);
+            $.each(result, function(name, value) {
+                $('#' + name).text(name + ' @ ' + value[0] + ' °C/' + value[1] + '%');
+            });
+        },
+        error: function (result) {
+            alert('Error retreiving data from server');
+        }
+    });
+});
+
 
